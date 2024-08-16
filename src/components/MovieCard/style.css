@@ -1,0 +1,79 @@
+.movie-card {
+  display: flex;
+  flex-direction: column;
+  background-color: #1b1b2f;
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  width: 330px;
+  transition: transform 0.3s, box-shadow 0.3s;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  position: relative;
+}
+
+.movie-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+}
+
+.movie-card__image-container {
+  width: 100%;
+  overflow: hidden;
+}
+
+.movie-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.movie-card:hover .movie-card__image {
+  transform: scale(1.1);
+}
+
+.movie-card__content {
+  padding: 20px;
+  background-color: #141e30; /* Darker gradient blend */
+  color: white;
+}
+
+.movie-card__title {
+  font-size: 22px;
+  margin-bottom: 15px;
+  font-weight: 700;
+  color: #ffffff;
+  display: flex;
+  justify-content: space-between;
+}
+
+.movie-card__rating {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.star {
+  font-size: 18px;
+  color: #ffc107; /* Gold color for stars */
+  margin-right: 4px;
+}
+
+.star.half-filled {
+  background: linear-gradient(90deg, #ffc107 50%, #ccc 50%);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.movie-card__rating-count {
+  margin-left: 10px;
+  font-size: 14px;
+  color: #b0b0b0;
+}
+
+.movie-card__description {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #dddddd;
+}

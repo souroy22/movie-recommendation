@@ -1,0 +1,29 @@
+.infinite-movie-section {
+  display: flex;
+  padding-top: 20px;
+  gap: 30px 20px;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  overflow-y: auto;
+  width: 100svw;
+}
+
+.infinite-movie-section::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+.infinite-movie-section::-webkit-scrollbar-track {
+  display: none;
+}
+
+/* Handle */
+.infinite-movie-section::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+.infinite-movie-section::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
