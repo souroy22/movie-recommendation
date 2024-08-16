@@ -7,6 +7,7 @@ interface SelectProps {
   placeholder?: string;
   onChange?: (value: string) => void;
   selectedCategory: number | string;
+  isDisabled?: boolean;
 }
 
 const SelectComponent: FC<SelectProps> = ({
@@ -14,6 +15,7 @@ const SelectComponent: FC<SelectProps> = ({
   placeholder = "Select an option",
   selectedCategory,
   onChange,
+  isDisabled = false,
 }) => {
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const value = event.target.value;
@@ -26,6 +28,7 @@ const SelectComponent: FC<SelectProps> = ({
         value={selectedCategory}
         onChange={handleChange}
         className="select"
+        disabled={isDisabled}
       >
         <option value="" disabled className="placeholder">
           {placeholder}

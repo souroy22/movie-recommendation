@@ -51,6 +51,18 @@ body {
   height: calc(100svh);
 }
 
+.no-data-found {
+  width: 100%;
+  height: 70%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  color: #757575;
+  font-size: 25px;
+  font-weight: 700;
+}
+
 .fav-movie-container::-webkit-scrollbar {
   width: 10px;
 }

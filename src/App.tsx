@@ -1,7 +1,7 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import axios from "axios";
 import "./App.css";
-import MovieCard from "./components/MovieCard";
+import MovieCard, { isFavMovie } from "./components/MovieCard";
 import InfiniteScrollComponent from "./components/InfiniteScrollComponent";
 import useDebounce from "./hooks/useDebounce";
 import Backdrop from "./Backdrop";
@@ -157,6 +157,25 @@ const App = () => {
     }
   };
 
+  const handleClick = (data: MOVIE_TYPE) => {
+    const movies: MOVIE_TYPE[] | null = customLocalStorage.getData("favMovies");
+    if (!movies) {
+      customLocalStorage.setData("favMovies", [data]);
+      return;
+    }
+    if (isFavMovie(data.id)) {
+      const filteredData = movies?.filter((movie) => movie.id !== data.id);
+      customLocalStorage.setData("favMovies", filteredData);
+    } else {
+      customLocalStorage.setData("favMovies", [...movies, data]);
+    }
+    if (activeTab === "FAVOURITES") {
+      setMovies((prevState) =>
+        prevState.filter((movie) => movie.id !== data.id)
+      );
+    }
+  };
+
   useEffect(() => {
     onLoad();
   }, []);
@@ -170,6 +189,7 @@ const App = () => {
           value={searchQuery}
           onChange={handleSearch}
           className="search-input"
+          disabled={activeTab === "FAVOURITES"}
         />
         <div>
           <SelectComponent
@@ -180,6 +200,7 @@ const App = () => {
               getAllMovies(1, Number(value));
               setSelectedCategory(Number(value));
             }}
+            isDisabled={activeTab === "FAVOURITES"}
           />
         </div>
       </div>
@@ -191,7 +212,9 @@ const App = () => {
         />
       </div>
       <div id="movies-section">
-        {activeTab === "ALL" ? (
+        {!movies.length ? (
+          <div className="no-data-found">No Data Found!</div>
+        ) : activeTab === "ALL" ? (
           <InfiniteScrollComponent
             currentCount={movies.length}
             loadFetchMoreData={loadMoreMovies}
@@ -207,6 +230,7 @@ const App = () => {
                   ratingCount={movie.vote_count}
                   description={movie.overview}
                   data={movie}
+                  handleClick={handleClick}
                 />
               </div>
             ))}
@@ -222,6 +246,7 @@ const App = () => {
                   ratingCount={movie.vote_count}
                   description={movie.overview}
                   data={movie}
+                  handleClick={handleClick}
                 />
               </div>
             ))}

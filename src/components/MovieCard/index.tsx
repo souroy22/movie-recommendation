@@ -7,6 +7,17 @@ import "./style.css";
 import { customLocalStorage } from "../../utility/customLocalStorage";
 import { MOVIE_TYPE } from "../../App";
 
+export const isFavMovie = (id: number) => {
+  const movies: MOVIE_TYPE[] | null = customLocalStorage.getData("favMovies");
+  if (movies) {
+    for (let movie of movies) {
+      if (movie.id === id) {
+        return true;
+      }
+    }
+  }
+  return false;
+};
 interface MovieCardProps {
   imageUrl: string;
   title: string;
@@ -14,6 +25,7 @@ interface MovieCardProps {
   ratingCount: number;
   description: string;
   data: MOVIE_TYPE;
+  handleClick: (value: MOVIE_TYPE) => void;
 }
 
 const MovieCard: FC<MovieCardProps> = ({
@@ -23,6 +35,7 @@ const MovieCard: FC<MovieCardProps> = ({
   ratingCount,
   description,
   data,
+  handleClick,
 }) => {
   const STARS_COUNT = 10;
 
@@ -49,32 +62,6 @@ const MovieCard: FC<MovieCardProps> = ({
     return stars;
   };
 
-  const isFavMovie = (id: number) => {
-    const movies: MOVIE_TYPE[] | null = customLocalStorage.getData("favMovies");
-    if (movies) {
-      for (let movie of movies) {
-        if (movie.id === id) {
-          return true;
-        }
-      }
-    }
-    return false;
-  };
-
-  const handleClick = (data: MOVIE_TYPE) => {
-    const movies: MOVIE_TYPE[] | null = customLocalStorage.getData("favMovies");
-    if (!movies) {
-      customLocalStorage.setData("favMovies", [data]);
-      return;
-    }
-    if (isFavMovie(data.id)) {
-      const filteredData = movies?.filter((movie) => movie.id !== data.id);
-      customLocalStorage.setData("favMovies", filteredData);
-    } else {
-      customLocalStorage.setData("favMovies", [...movies, data]);
-    }
-  };
-
   return (
     <div className="movie-card">
       <div className="movie-card__image-container">
@@ -96,6 +83,7 @@ const MovieCard: FC<MovieCardProps> = ({
             onClick={() => {
               handleClick(data);
             }}
+            strokeColor={isFavMovie(data.id) ? "red" : "#FFF"}
             render={(eventProps, animationProps) => (
               <button
                 {...eventProps}
@@ -106,6 +94,7 @@ const MovieCard: FC<MovieCardProps> = ({
                   width: "30px",
                   height: "30px",
                   color: "#FFF",
+                  cursor: "pointer",
                 }}
                 type="button"
               >
