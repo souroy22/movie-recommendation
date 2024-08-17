@@ -16,14 +16,20 @@ body {
   padding: 30px;
 }
 
+.search-input-container {
+  width: 300px;
+  border-bottom: 2px solid #fff;
+  padding: 5px;
+  display: flex;
+  gap: 5px;
+  justify-content: space-between;
+  transition: all 0.3s ease-in-out;
+}
+
 .search-input {
   outline: none;
   border: none;
-  border-bottom: 2px solid #fff;
-  padding: 5px;
   background-color: transparent;
-  width: 300px;
-  transition: all 0.3s ease-in-out;
   font-size: 19px;
   caret-color: white;
   color: #fff;
@@ -102,5 +108,9 @@ body {
 
   .sorting-title {
     width: 30%;
+  }
+
+  .search-input-container {
+    margin: auto;
   }
 }

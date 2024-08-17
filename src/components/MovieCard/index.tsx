@@ -1,11 +1,10 @@
 import { FC } from "react";
 import ImageWithSkeleton from "../ImageWithSkeleton";
 import UseAnimations from "react-useanimations";
-// EVERY ANIMATION NEEDS TO BE IMPORTED FIRST -> YOUR BUNDLE WILL INCLUDE ONLY WHAT IT NEEDS
 import heart from "react-useanimations/lib/heart";
-import "./style.css";
 import { customLocalStorage } from "../../utility/customLocalStorage";
 import { MOVIE_TYPE } from "../../App";
+import "./style.css";
 
 export const isFavMovie = (id: number) => {
   const movies: MOVIE_TYPE[] | null = customLocalStorage.getData("favMovies");

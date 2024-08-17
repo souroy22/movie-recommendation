@@ -7,6 +7,8 @@ import Backdrop from "./Backdrop";
 import SelectComponent from "./components/SelectComponent";
 import Tabs from "./components/Tabs";
 import { customLocalStorage } from "./utility/customLocalStorage";
+import SeachIcon from "react-useanimations/lib/searchToX";
+import UseAnimations from "react-useanimations";
 import "./App.css";
 
 const options = ["ALL", "FAVOURITES"];
@@ -51,6 +53,7 @@ const App = () => {
   const [selectedCategory, setSelectedCategory] = useState<number | string>("");
   const [activeTab, setActiveTab] = useState("ALL");
   const [selectedSortOption, setSelectedSortOption] = useState("");
+  const [isFocused, setIsFocused] = useState(false);
 
   const getAllMovies = async (
     page: number = 1,
@@ -195,6 +198,14 @@ const App = () => {
     }
   };
 
+  const handleFocus = () => {
+    setIsFocused(true);
+  };
+
+  const handleBlur = () => {
+    setIsFocused(false);
+  };
+
   useEffect(() => {
     onLoad();
   }, []);
@@ -203,13 +214,21 @@ const App = () => {
     <div id="app">
       <Backdrop isLoading={loading} />
       <div className="header-section">
-        <input
-          placeholder="search movie..."
-          value={searchQuery}
-          onChange={handleSearch}
-          className="search-input"
-          disabled={activeTab === "FAVOURITES"}
-        />
+        <div
+          className="search-input-container"
+          style={{ width: isFocused ? "95%" : "85%" }}
+        >
+          <input
+            placeholder="search movie..."
+            value={searchQuery}
+            onChange={handleSearch}
+            className="search-input"
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            disabled={activeTab === "FAVOURITES"}
+          />
+          <UseAnimations animation={SeachIcon} strokeColor="#FFF" />
+        </div>
         <div>
           <SelectComponent
             options={categories}
