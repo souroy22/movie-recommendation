@@ -6,14 +6,14 @@ interface SelectProps {
   options: CATEGORY_TYPE[];
   placeholder?: string;
   onChange?: (value: string) => void;
-  selectedCategory: number | string;
+  selectedOption: number | string;
   isDisabled?: boolean;
 }
 
 const SelectComponent: FC<SelectProps> = ({
   options,
   placeholder = "Select an option",
-  selectedCategory,
+  selectedOption,
   onChange,
   isDisabled = false,
 }) => {
@@ -25,7 +25,7 @@ const SelectComponent: FC<SelectProps> = ({
   return (
     <div className="select-container">
       <select
-        value={selectedCategory}
+        value={selectedOption}
         onChange={handleChange}
         className="select"
         disabled={isDisabled}
@@ -34,8 +34,8 @@ const SelectComponent: FC<SelectProps> = ({
           {placeholder}
         </option>
         {options.map((option) => (
-          <option key={option.id} value={option.id}>
-            {option.name}
+          <option key={option.value} value={option.value}>
+            {option.label}
           </option>
         ))}
       </select>

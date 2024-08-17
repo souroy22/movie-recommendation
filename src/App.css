@@ -63,6 +63,18 @@ body {
   font-weight: 700;
 }
 
+.sorting-container {
+  display: flex;
+}
+
+.sorting-title {
+  color: #fff;
+  width: 50%;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
 .fav-movie-container::-webkit-scrollbar {
   width: 10px;
 }
@@ -81,4 +93,14 @@ body {
 /* Handle on hover */
 .fav-movie-container::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+
+@media screen and (max-width: 500px) {
+  .header-section {
+    flex-direction: column;
+  }
+
+  .sorting-title {
+    width: 30%;
+  }
 }

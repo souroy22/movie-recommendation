@@ -1,6 +1,5 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import axios from "axios";
-import "./App.css";
 import MovieCard, { isFavMovie } from "./components/MovieCard";
 import InfiniteScrollComponent from "./components/InfiniteScrollComponent";
 import useDebounce from "./hooks/useDebounce";
@@ -8,8 +7,17 @@ import Backdrop from "./Backdrop";
 import SelectComponent from "./components/SelectComponent";
 import Tabs from "./components/Tabs";
 import { customLocalStorage } from "./utility/customLocalStorage";
+import "./App.css";
 
 const options = ["ALL", "FAVOURITES"];
+const sortOptions = [
+  { label: "Popularity (asc)", value: "popularity.asc" },
+  { label: "Popularity (desc)", value: "popularity.desc" },
+  { label: "Release Date (asc)", value: "primary_release_date.asc" },
+  { label: "Release Date (desc)", value: "primary_release_date.desc" },
+  { label: "Most Voted (asc)", value: "vote_average.asc" },
+  { label: "Most Voted (desc)", value: "vote_average.desc" },
+];
 
 export type MOVIE_TYPE = {
   adult: boolean;
@@ -29,8 +37,8 @@ export type MOVIE_TYPE = {
 };
 
 export type CATEGORY_TYPE = {
-  id: number;
-  name: string;
+  label: string;
+  value: string;
 };
 
 const App = () => {
@@ -42,13 +50,21 @@ const App = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [selectedCategory, setSelectedCategory] = useState<number | string>("");
   const [activeTab, setActiveTab] = useState("ALL");
+  const [selectedSortOption, setSelectedSortOption] = useState("");
 
-  const getAllMovies = async (page: number = 1, id: number | null = null) => {
+  const getAllMovies = async (
+    page: number = 1,
+    id: number | null = null,
+    sort_by: string = ""
+  ) => {
     const params: any = {};
     params["api_key"] = import.meta.env.VITE_API_KEY;
     params["page"] = page;
     if (id) {
       params["with_genres"] = id;
+    }
+    if (sort_by.trim()) {
+      params["sort_by"] = sort_by;
     }
     const result = await axios.get(import.meta.env.VITE_MAIN_URL, {
       params,
@@ -117,7 +133,10 @@ const App = () => {
         api_key: import.meta.env.VITE_API_KEY,
       },
     });
-    setCategories(result.data.genres);
+    const modifiedData = result.data.genres.map((data: any) => {
+      return { label: data.name, value: String(data.id) };
+    });
+    setCategories(modifiedData);
   };
 
   const onLoad = async () => {
@@ -194,11 +213,24 @@ const App = () => {
         <div>
           <SelectComponent
             options={categories}
-            selectedCategory={selectedCategory}
+            selectedOption={selectedCategory}
             placeholder="Select a Category"
             onChange={(value) => {
               getAllMovies(1, Number(value));
               setSelectedCategory(Number(value));
+            }}
+            isDisabled={activeTab === "FAVOURITES"}
+          />
+        </div>
+        <div className="sorting-container">
+          <h3 className="sorting-title">Sort by: </h3>
+          <SelectComponent
+            options={sortOptions}
+            selectedOption={selectedSortOption}
+            placeholder="Select a Option"
+            onChange={(value) => {
+              getAllMovies(1, Number(selectedCategory), value);
+              setSelectedSortOption(value);
             }}
             isDisabled={activeTab === "FAVOURITES"}
           />
